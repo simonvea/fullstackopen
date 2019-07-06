@@ -15,6 +15,39 @@ const StatisticsInfo = ({text, count}) => {
     )
 }
 
+const Statistics = ({good, neutral, bad, all, average, positive}) => {
+    if(all < 1) {return (<p>No feedback given</p>)}
+    return (
+        <div>
+            <h2>statistics</h2>
+            <StatisticsInfo
+                text={"good"}
+                count={good}
+                />
+            <StatisticsInfo
+                text={"neutral"}
+                count={neutral}
+                />
+            <StatisticsInfo
+                text={"bad"}
+                count={bad}
+                />
+            <StatisticsInfo
+                text={"all"}
+                count={all}
+                />
+            <StatisticsInfo
+                text={"average"}
+                count={average}
+                />
+            <StatisticsInfo
+                text={"positive"}
+                count={`${positive * 100} %`}
+                />
+        </div>
+    )
+}
+
 const App = () => {
   // save clicks of each button to own state
   const [good, setGood] = useState(0)
@@ -41,31 +74,15 @@ const App = () => {
             clickHandler={()=> setBad(bad +1)}
             text={"bad"}
             />
-      <h2>statistics</h2>
-        <StatisticsInfo
-            text={"good"}
-            count={good}
-            />
-        <StatisticsInfo
-            text={"neutral"}
-            count={neutral}
-            />
-        <StatisticsInfo
-            text={"bad"}
-            count={bad}
-            />
-        <StatisticsInfo
-            text={"all"}
-            count={all}
-            />
-        <StatisticsInfo
-            text={"average"}
-            count={average}
-            />
-        <StatisticsInfo
-            text={"positive"}
-            count={`${positive * 100} %`}
-            />
+      <Statistics 
+        good={good}
+        bad={bad}
+        neutral={neutral}
+        all={all}
+        average={average}
+        positive={positive}
+      
+      />
     </div>
   )
 }

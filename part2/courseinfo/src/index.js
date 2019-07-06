@@ -48,10 +48,11 @@ const App = () => {
     }
   ]
 
+  const coursesComps = () => courses.map(course => <Course course={course} key={course.id} />)
   return (
     <div>
       <h1>Web development curriculum</h1>
-      {courses.map(course => <Course course={course} key={course.id} />)}
+      {coursesComps()}
     </div>
   )
 }

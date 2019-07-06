@@ -38,9 +38,45 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
+  const [ alertMessage, setAlertMessage ] = useState([])
+
 
   const checkName = (name) => {
     return persons.findIndex((person) => person.name === name) !== -1
+  }
+
+  const Message = ({msg}) => {
+    const [name, alert] = msg
+    if(!name) {return null}
+
+    let color, bgColor, text;
+
+    if(alert === "add") {
+      color = "green"
+      bgColor = "lightgreen"
+      text = `Added ${name}`
+    } else if (alert === "error") {
+      color = "red"
+      bgColor = "rosybrown"
+      text = `Information of ${name} has already been removed from server`
+    }
+    
+    const msgStyle = {
+      border: `2px solid ${color}`,
+      backgroundColor: `${bgColor}`,
+      fontSize: 16,
+      color: `${color}`,
+      borderRadius: 2,
+      padding: 4,
+      width: 200
+    }
+
+
+    return (
+      <div style={msgStyle}>
+         {text}
+      </div>
+    )
   }
 
   const addName = (event) => {
@@ -69,7 +105,10 @@ const App = () => {
     }
     
     personService.addPerson(nameObject)
-      .then(res => setPersons(persons.concat(res)))
+      .then(res => {
+        setPersons(persons.concat(res))
+        setAlertMessage([res.name, "add"])
+      })
       .catch(err => console.error(err))
 
     setNewName('')
@@ -88,7 +127,7 @@ const App = () => {
       .then(res => {
         setPersons(updatedPersons);
       })
-      .catch(err => console.error(err))
+      .catch(err => setAlertMessage([name, "error"]))
     } else {
       return
     }
@@ -112,6 +151,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+        <Message msg={alertMessage} />
         <Filter 
           filter={filter}
           handleFilterChange={handleFilterChange}

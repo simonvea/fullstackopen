@@ -9,9 +9,14 @@ const FeedbackButton = ({clickHandler, text}) => {
 
 const Statistic = ({text, count}) => {
     return (
-        <p>
-            {text} {count}
-        </p>
+        <tr>
+            <td>
+                {text}
+            </td> 
+            <td>
+                {count}
+            </td>
+        </tr>
     )
 }
 
@@ -20,30 +25,34 @@ const Statistics = ({good, neutral, bad, all, average, positive}) => {
     return (
         <div>
             <h2>statistics</h2>
-            <Statistic
-                text="good"
-                count={good}
-                />
-            <Statistic
-                text="neutral"
-                count={neutral}
-                />
-            <Statistic
-                text="bad"
-                count={bad}
-                />
-            <Statistic
-                text="all"
-                count={all}
-                />
-            <Statistic
-                text="average"
-                count={average}
-                />
-            <Statistic
-                text="positive"
-                count={`${positive * 100} %`}
-                />
+            <table>
+                <tbody>
+                    <Statistic
+                        text="good"
+                        count={good}
+                        />
+                    <Statistic
+                        text="neutral"
+                        count={neutral}
+                        />
+                    <Statistic
+                        text="bad"
+                        count={bad}
+                        />
+                    <Statistic
+                        text="all"
+                        count={all}
+                        />
+                    <Statistic
+                        text="average"
+                        count={average}
+                        />
+                    <Statistic
+                        text="positive"
+                        count={`${positive * 100} %`}
+                        />
+                </tbody>
+            </table>
         </div>
     )
 }

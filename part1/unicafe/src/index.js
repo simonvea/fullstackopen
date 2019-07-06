@@ -7,7 +7,7 @@ const FeedbackButton = ({clickHandler, text}) => {
     )
 }
 
-const StatisticsInfo = ({text, count}) => {
+const Statistic = ({text, count}) => {
     return (
         <p>
             {text} {count}
@@ -20,28 +20,28 @@ const Statistics = ({good, neutral, bad, all, average, positive}) => {
     return (
         <div>
             <h2>statistics</h2>
-            <StatisticsInfo
-                text={"good"}
+            <Statistic
+                text="good"
                 count={good}
                 />
-            <StatisticsInfo
-                text={"neutral"}
+            <Statistic
+                text="neutral"
                 count={neutral}
                 />
-            <StatisticsInfo
-                text={"bad"}
+            <Statistic
+                text="bad"
                 count={bad}
                 />
-            <StatisticsInfo
-                text={"all"}
+            <Statistic
+                text="all"
                 count={all}
                 />
-            <StatisticsInfo
-                text={"average"}
+            <Statistic
+                text="average"
                 count={average}
                 />
-            <StatisticsInfo
-                text={"positive"}
+            <Statistic
+                text="positive"
                 count={`${positive * 100} %`}
                 />
         </div>

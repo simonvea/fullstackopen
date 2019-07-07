@@ -1,6 +1,6 @@
 
 
-const baseUrl = "http://localhost:3001/persons"
+const baseUrl = "http://localhost:3001/api/persons"
 
 async function updatePerson(id, data) {
 
@@ -23,7 +23,7 @@ async function deletePerson(id) {
     const url = `${baseUrl}/${id}`
     const response = await fetch(url, init)
 
-    return response.json()
+    return response
 }
 
 async function addPerson(person) {

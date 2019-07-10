@@ -46,8 +46,8 @@ const App = () => {
   }
 
   const Message = ({msg}) => {
-    const [name, alert] = msg
-    if(!name) {return null}
+    const [name, alert, message] = msg
+    //if(!name) {return null}
 
     let color, bgColor, text;
 
@@ -58,7 +58,7 @@ const App = () => {
     } else if (alert === "error") {
       color = "red"
       bgColor = "rosybrown"
-      text = `Information of ${name} has already been removed from server`
+      text = message || `Information of ${name} has already been removed from server`
     }
     
     const msgStyle = {
@@ -90,7 +90,7 @@ const App = () => {
         const updatedPersons = persons.map(person => person.id === id ? updatedPerson : person)
 
         personService.updatePerson(id, updatedPerson)
-          .then(res => setPersons(updatedPersons))
+          .then(res => res.ok? setPersons(updatedPersons): setAlertMessage([undefined, "error", res.error]))
           .catch(err => console.error(err))
 
         return
@@ -106,10 +106,16 @@ const App = () => {
     
     personService.addPerson(nameObject)
       .then(res => {
-        setPersons(persons.concat(res))
-        setAlertMessage([res.name, "add"])
+        if(res.error) {
+          setAlertMessage([undefined, "error", res.error])
+        } else {
+          setPersons(persons.concat(res))
+          setAlertMessage([res.name, "add"])
+        }
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error(err)
+       })
 
     setNewName('')
     setNewNumber('')

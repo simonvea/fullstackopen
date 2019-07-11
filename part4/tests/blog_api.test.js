@@ -6,17 +6,18 @@ const Blog = require('../models/blog')
 
 const api = supertest(app)
 
-beforeEach(async () => {
-    await Blog.deleteMany({})
 
-    const blogs = helper.blogs.map(blog => new Blog(blog))
-    const saved = blogs.map(blog => blog.save())
-
-    await Promise.all(saved)
-})
 
 describe('api test', () => {
+
+    beforeEach(async () => {
+        await Blog.deleteMany({})
     
+        const blogs = helper.blogs.map(blog => new Blog(blog))
+        const saved = blogs.map(blog => blog.save())
+    
+        await Promise.all(saved)
+    })
 
     it('returns the correct amount of blog posts', async () => {
         const response = await api.get('/api/blogs')

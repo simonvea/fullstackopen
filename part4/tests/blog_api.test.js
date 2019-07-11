@@ -61,33 +61,64 @@ describe('api test', () => {
         
     })
 
-    it.only('returns bad request when missing title or url', async () => {
+    describe('returns bad request when missing title or url',  () => {
         const badpost = {
             "author": "Simon",
             "likes": "1000"
         }
 
-        await api.post('/api/blogs')
-            .send(badpost)
-            .expect(400)
-
-        const noTitlePost = {
-            ...badpost,
-            "url": "www.google.com"
-        }
+        test('no url and no title', async () =>{
+    
+            await api.post('/api/blogs')
+                .send(badpost)
+                .expect(400)
+        })
         
-        await api.post('/api/blogs')
-            .send(noTitlePost)
-            .expect(400)
+        test('no title', async () => {
+            const noTitlePost = {
+                ...badpost,
+                "url": "www.google.com"
+            }
+            
+            await api.post('/api/blogs')
+                .send(noTitlePost)
+                .expect(400)
+        })
 
-        const noUrlPost = {
-            ...badpost,
-            "title": "This is a test"
-        }
+        test('no url', async () => {
+            const noUrlPost = {
+                ...badpost,
+                "title": "This is a test"
+            }
+            
+            await api.post('/api/blogs')
+                .send(noUrlPost)
+                .expect(400)
+        })
+
+    })
+
+    it('deletes a post', async () => {
+        const blogs = await helper.blogsInDb()
+        const id = blogs[0].id
+
+        await api.delete(`/api/blogs/${id}`)
+                .expect(204)
+
+        const updated = await helper.blogsInDb()
         
-        await api.post('/api/blogs')
-            .send(noUrlPost)
-            .expect(400)
+        expect(updated.length).toBe(helper.blogs.length - 1)
+    })
+
+    it('updates a post', async () => {
+        const blogs = await helper.blogsInDb()
+        const id = blogs[0].id
+
+        const updatedPost = helper.singlePost
+
+        const response = await api.put(`/api/blogs/${id}`).send(updatedPost)
+
+        expect(response.body.likes).toEqual(Number(updatedPost.likes))
 
     })
 

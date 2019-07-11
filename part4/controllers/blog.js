@@ -16,9 +16,7 @@ router.post('/', async (req, res) => {
   }
 
   const post = {
-    title: req.body.title,
-    author: req.body.author,
-    url: req.body.url,
+    ...req.body,
     likes: req.body.likes || 0,
   }
 
@@ -28,6 +26,27 @@ router.post('/', async (req, res) => {
 
   res.status(201).send(result.toJSON())
 
+})
+
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id
+
+  await Blog.findByIdAndDelete(id)
+
+  res.status(204).end()
+
+})
+
+router.put('/:id', async (req, res) => {
+  const id = req.params.id
+  const post = {
+    ...req.body,
+    likes: req.body.likes || 0,
+  }
+
+  const response = await Blog.findByIdAndUpdate(id, post, { new: true })
+
+  res.send(response.toJSON())
 })
 
 module.exports = router

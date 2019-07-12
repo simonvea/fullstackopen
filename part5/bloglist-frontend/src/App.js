@@ -5,6 +5,7 @@ import loginServices from './services/login.js'
 import blogServices from './services/blogs.js'
 import CreateBlog from './components/createBlog.js';
 import AlertMessage from './components/alertMessage.js'
+import ToggleComponent from './components/ToggleComponent'
 
 
 function App() {
@@ -72,9 +73,11 @@ function App() {
         <p>
           {user.name} logged in. <button type="button" onClick={handleLogout}>Log out</button>
         </p>
-        <CreateBlog token={user.token} update={handleCreatePost}/>
+        <ToggleComponent buttonLabel="Create new post">
+          <CreateBlog token={user.token} update={handleCreatePost} />
+        </ToggleComponent>
         <br></br>
-          {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+          {blogs.sort((a,b) => a.likes < b.likes ? 1 : -1 ).map(blog => <Blog key={blog.id} blog={blog} user={user} update={updateBlogs}/>)}
       </div>
     )
   } else {

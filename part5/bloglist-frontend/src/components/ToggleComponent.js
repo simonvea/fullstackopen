@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 function ToggleComponent(props) {
   const [active, setActive] = useState(false)
@@ -17,6 +18,10 @@ function ToggleComponent(props) {
       </div>
     </div>
   )
+}
+
+ToggleComponent.propTypes = {
+  buttonLabel: PropTypes.string.isRequired,
 }
 
 export default ToggleComponent

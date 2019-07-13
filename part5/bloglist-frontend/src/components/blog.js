@@ -51,10 +51,10 @@ function Blog({ blog, user, update, }){
 
   return (
     <div style={blogStyle}>
-      <div onClick={() => setActive(!active)}>
+      <div onClick={() => setActive(!active)} className="blog-title">
         {blog.title} {blog.author}
       </div>
-      <div style={showWhenActive}>
+      <div style={showWhenActive} className="blog-info" >
         <div>
           {likes} likes <button type="button" onClick={handleLike}>like</button>
         </div>

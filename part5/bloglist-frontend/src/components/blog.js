@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogServices from '../services/blogs'
 
-function Blog({ blog, user, update, deleteButton }) {
+function Blog({ blog, user, update, }){
   const [active, setActive] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
@@ -38,7 +38,7 @@ function Blog({ blog, user, update, deleteButton }) {
     const token = user.token
 
     if(window.confirm(`delete ${blog.title} by ${blog.author}?`)) {
-      const response = await blogServices.deletePost(blogId, token);
+      const response = await blogServices.deletePost(blogId, token)
       if(response === 204) {
         update()
       }
@@ -46,7 +46,7 @@ function Blog({ blog, user, update, deleteButton }) {
         console.error(`deletion failed with status ${response}`)
       }
     }
-    
+
   }
 
   return (

@@ -55,7 +55,7 @@ async function deletePost (blogId, token) {
 }
 
 
-export default { 
+export default {
   getAll,
   addBlogPost,
   editPost,

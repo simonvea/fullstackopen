@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import LoginForm from './components/login.js'
 import Blog from './components/blog.js'
 import loginServices from './services/login.js'
 import blogServices from './services/blogs.js'
-import CreateBlog from './components/createBlog.js';
+import CreateBlog from './components/createBlog.js'
 import AlertMessage from './components/alertMessage.js'
 import ToggleComponent from './components/ToggleComponent'
 
@@ -29,43 +29,43 @@ function App() {
   }
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const { token, name, error } = await loginServices.login({ username, password})
-   
+    const { token, name, error } = await loginServices.login({ username, password })
+
     if(token) {
       setUser({ token, username, name })
       setUsername('')
       setPassword('')
       localStorage.setItem('user', JSON.stringify({ token, username, name }))
       updateBlogs()
-      setNotification({type: "add", message: `successfully logged in ${name}`})
+      setNotification({ type: 'add', message: `successfully logged in ${name}` })
       setInterval(() => setNotification({}), 5000)
     } else {
-      setNotification({type: "error", message: error})
+      setNotification({ type: 'error', message: error })
       setInterval(() => setNotification({}), 5000)
     }
-    
+
   }
 
   const handleLogout = () => {
     localStorage.removeItem('user')
     setUser(null)
-    setNotification({type: "error", message: "Logged out!"})
+    setNotification({ type: 'error', message: 'Logged out!' })
     setInterval(() => setNotification({}), 5000)
   }
 
   const handleCreatePost = (blog) => {
-    setNotification({type: "add", message: `A new blog ${blog.title} by ${blog.author} added`})
+    setNotification({ type: 'add', message: `A new blog ${blog.title} by ${blog.author} added` })
     setInterval(() => setNotification({}), 5000)
     updateBlogs()
   }
 
   const handlePasswordChange = ({ target }) => setPassword(target.value)
   const handleUsernameChange = ({ target }) => setUsername(target.value)
-  
+
   if (user) {
-    
+
     return (
       <div>
         <AlertMessage type={notification.type} message={notification.message} />
@@ -77,7 +77,7 @@ function App() {
           <CreateBlog token={user.token} update={handleCreatePost} />
         </ToggleComponent>
         <br></br>
-          {blogs.sort((a,b) => a.likes < b.likes ? 1 : -1 ).map(blog => <Blog key={blog.id} blog={blog} user={user} update={updateBlogs}/>)}
+        {blogs.sort((a,b) => a.likes < b.likes ? 1 : -1 ).map(blog => <Blog key={blog.id} blog={blog} user={user} update={updateBlogs}/>)}
       </div>
     )
   } else {
@@ -85,18 +85,18 @@ function App() {
     return (
       <div>
         <AlertMessage type={notification.type} message={notification.message} />
-        <LoginForm 
+        <LoginForm
           handleLogin={handleLogin}
           username={username}
           handleUsername={handleUsernameChange}
           password={password}
           handlePassword={handlePasswordChange}
-        />  
+        />
       </div>
-    );
+    )
 
   }
 
 }
 
-export default App;
+export default App

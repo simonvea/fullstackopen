@@ -4,16 +4,16 @@ const AlertMessage = ({ type, message }) => {
 
   if(!type) return null
 
-  let color, bgColor;
+  let color, bgColor
 
-  if(type === "add") {
-    color = "green"
-    bgColor = "lightgreen"
-  } else if (type === "error") {
-    color = "red"
-    bgColor = "rosybrown"
+  if(type === 'add') {
+    color = 'green'
+    bgColor = 'lightgreen'
+  } else if (type === 'error') {
+    color = 'red'
+    bgColor = 'rosybrown'
   }
-  
+
   const msgStyle = {
     border: `2px solid ${color}`,
     backgroundColor: `${bgColor}`,
@@ -27,7 +27,7 @@ const AlertMessage = ({ type, message }) => {
 
   return (
     <div style={msgStyle}>
-       {message}
+      {message}
     </div>
   )
 }

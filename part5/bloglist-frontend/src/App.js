@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import  { useField } from './hooks'
 import LoginForm from './components/login.js'
 import Blog from './components/blog.js'
 import loginServices from './services/login.js'
@@ -10,10 +11,11 @@ import ToggleComponent from './components/ToggleComponent'
 
 function App() {
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [blogs, setBlogs] = useState([])
   const [notification, setNotification] = useState({})
+
+  const username = useField('text')
+  const password = useField('password')
 
   useEffect(() => {
     if(localStorage.user) {
@@ -31,12 +33,12 @@ function App() {
   const handleLogin = async (event) => {
     event.preventDefault()
 
-    const { token, name, error } = await loginServices.login({ username, password })
+    const { token, name, error } = await loginServices.login({ username: username.value, password: password.value })
 
     if(token) {
       setUser({ token, username, name })
-      setUsername('')
-      setPassword('')
+      username.clear()
+      password.clear()
       localStorage.setItem('user', JSON.stringify({ token, username, name }))
       updateBlogs()
       setNotification({ type: 'add', message: `successfully logged in ${name}` })
@@ -60,9 +62,6 @@ function App() {
     setInterval(() => setNotification({}), 5000)
     updateBlogs()
   }
-
-  const handlePasswordChange = ({ target }) => setPassword(target.value)
-  const handleUsernameChange = ({ target }) => setUsername(target.value)
 
   if (user) {
 
@@ -88,9 +87,7 @@ function App() {
         <LoginForm
           handleLogin={handleLogin}
           username={username}
-          handleUsername={handleUsernameChange}
           password={password}
-          handlePassword={handlePasswordChange}
         />
       </div>
     )

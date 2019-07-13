@@ -1,15 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import blogServices from '../services/blogs'
+import { useField } from '../hooks'
 
 function CreateBlog({ token, update }) {
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-
-  const handleTitleChange = ({ target }) => setTitle(target.value)
-  const handleAuthorChange = ({ target }) => setAuthor(target.value)
-  const handleUrlChange = ({ target }) => setUrl(target.value)
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -23,9 +20,9 @@ function CreateBlog({ token, update }) {
     await blogServices.addBlogPost(blog, token)
 
     update(blog)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    title.clear()
+    author.clear()
+    url.clear()
   }
 
   return (
@@ -33,21 +30,18 @@ function CreateBlog({ token, update }) {
       <form onSubmit={handleSubmit}>
         <label htmlFor="title">Title: </label>
         <input
-          type="text" name="title" id="title"
-          value={title}
-          onChange={handleTitleChange}
+          name="title" id="title"
+          {...title}
         ></input>
         <label htmlFor="author">Author: </label>
         <input
-          type="text" name="author" id="author"
-          value={author}
-          onChange={handleAuthorChange}
+          name="author" id="author"
+          {...author}
         ></input>
         <label htmlFor="title">Url: </label>
         <input
-          type="text" name="url" id="url"
-          value={url}
-          onChange={handleUrlChange}
+          name="url" id="url"
+          {...url }
         ></input>
         <button type="submit">Create</button>
       </form>

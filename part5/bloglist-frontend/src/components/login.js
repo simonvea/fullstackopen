@@ -1,25 +1,23 @@
 import React from 'react'
 
-function LoginForm (props) {
+function LoginForm ({ username, password, handleLogin }) {
 
+  password = { ...password, clear: undefined }
+  username = { ...username, clear: undefined }
 
   return (
-    <form onSubmit={props.handleLogin}>
+    <form onSubmit={handleLogin}>
       <label htmlFor="username">Username: </label>
       <input
-        type="text"
         name="username"
         id="username"
-        value={props.username}
-        onChange={props.handleUsername}
+        {...username}
       ></input>
       <label htmlFor="password">Password: </label>
       <input
-        type="password"
         name="password"
         id="password"
-        value={props.password}
-        onChange={props.handlePassword}
+        {...password}
       ></input>
       <button type="submit">Log in</button>
     </form>

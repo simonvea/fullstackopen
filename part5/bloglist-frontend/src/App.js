@@ -14,8 +14,8 @@ function App() {
   const [blogs, setBlogs] = useState([])
   const [notification, setNotification] = useState({})
 
-  const username = useField('text')
-  const password = useField('password')
+  const [ username, clearUsername]  = useField('text')
+  const [ password, clearPassword] = useField('password')
 
   useEffect(() => {
     if(localStorage.user) {
@@ -37,8 +37,8 @@ function App() {
 
     if(token) {
       setUser({ token, username, name })
-      username.clear()
-      password.clear()
+      clearUsername()
+      clearPassword()
       localStorage.setItem('user', JSON.stringify({ token, username, name }))
       updateBlogs()
       setNotification({ type: 'add', message: `successfully logged in ${name}` })

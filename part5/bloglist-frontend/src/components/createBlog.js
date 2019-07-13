@@ -4,25 +4,25 @@ import { useField } from '../hooks'
 
 function CreateBlog({ token, update }) {
 
-  const title = useField('text')
-  const author = useField('text')
-  const url = useField('text')
+  const [title, clearTitle] = useField('text')
+  const [author, clearAuthor] = useField('text')
+  const [url, clearUrl] = useField('text')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
     const blog = {
-      title,
-      author,
-      url
+      title: title.value,
+      author: author.value,
+      url: url.value,
     }
 
     await blogServices.addBlogPost(blog, token)
 
     update(blog)
-    title.clear()
-    author.clear()
-    url.clear()
+    clearTitle()
+    clearAuthor()
+    clearUrl()
   }
 
   return (

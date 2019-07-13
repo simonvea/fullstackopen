@@ -2,9 +2,6 @@ import React from 'react'
 
 function LoginForm ({ username, password, handleLogin }) {
 
-  password = { ...password, clear: undefined }
-  username = { ...username, clear: undefined }
-
   return (
     <form onSubmit={handleLogin}>
       <label htmlFor="username">Username: </label>

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { newAnecdote } from '../reducers/anecdoteReducer'
 import { showNotification, removeNotification } from '../reducers/notificationReducer'
+import anecdoteServices from '../services/anecdotes'
 
 
 function AnecdoteForm (props) {
@@ -11,12 +12,14 @@ function AnecdoteForm (props) {
     setTimeout(() => props.removeNotification(), 5000)
   }
   
-  const createNewNote = (event) => {
+  const createNewNote = async (event) => {
     event.preventDefault();
     
     const anecdote = event.target.anecdote.value
     event.target.anecdote.value = ''
-    props.newAnecdote(anecdote)
+
+    const newAnecdote = await anecdoteServices.createNew(anecdote)
+    props.newAnecdote(newAnecdote)
 
     const message = `Added '${anecdote}'`
     toggleNotification(message)

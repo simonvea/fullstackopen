@@ -1,8 +1,14 @@
 import React from 'react'
 import { newAnecdote } from '../reducers/anecdoteReducer'
+import { showNotification, removeNotification } from '../reducers/notificationReducer'
 
 
 function AnecdoteForm ({ store }) {
+
+  const toggleNotification = (message) => {
+    store.dispatch(showNotification(message))
+    setTimeout(() => store.dispatch(removeNotification()), 5000)
+  }
   
   const createNewNote = (event) => {
     event.preventDefault();
@@ -11,6 +17,8 @@ function AnecdoteForm ({ store }) {
     event.target.anecdote.value = ''
     store.dispatch(newAnecdote(anecdote))
 
+    const message = `Added '${anecdote}'`
+    toggleNotification(message)
   }
 
   return (

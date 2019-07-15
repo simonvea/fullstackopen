@@ -1,12 +1,20 @@
 import React from 'react'
 import { addVote } from '../reducers/anecdoteReducer'
+import { showNotification, removeNotification } from '../reducers/notificationReducer'
 
 function AnecdoteList({ store }) {
 
-  const anecdotes = store.getState()
+  const anecdotes = store.getState().anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(store.getState().filter))
 
-  const vote = (id) => {
-    store.dispatch(addVote(id))
+  const toggleNotification = (message) => {
+    store.dispatch(showNotification(message))
+    setTimeout(() => store.dispatch(removeNotification()), 5000)
+  }
+
+  const vote = (anecdote) => {
+    const message = `You voted '${anecdote.content}'`
+    store.dispatch(addVote(anecdote.id))
+    toggleNotification(message)
   }
 
 
@@ -19,7 +27,7 @@ function AnecdoteList({ store }) {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
         </div>
       )}

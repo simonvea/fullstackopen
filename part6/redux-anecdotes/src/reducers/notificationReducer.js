@@ -1,8 +1,13 @@
 
-export const showNotification = (message) => {
-  return {
-    type: "ALERT",
-    data: message
+export const setNotification = (message, time) => {
+  return async (dispatch) => {
+    dispatch({
+      type: "ALERT",
+      data: message
+    })
+    setTimeout(() => dispatch({
+      type: "REMOVE"
+    }),time * 1000)
   }
 }
 

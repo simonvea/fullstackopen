@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom'
 import  { useField } from './hooks'
 import LoginForm from './components/login.js'
 import Blog from './components/blog.js'
 import loginServices from './services/login.js'
 import blogServices from './services/blogs.js'
+import userServices from './services/users'
 import CreateBlog from './components/createBlog.js'
 import AlertMessage from './components/alertMessage.js'
 import ToggleComponent from './components/ToggleComponent'
+import Users from './components/users'
+import UserBlogInfo from './components/userBlogInfo'
 import { loginUser, logoutUser } from './reducers/userReducer'
 import { initBlogs } from './reducers/blogReducer'
 import { addNotification, removeNotification } from './reducers/notificationReducer'
+import { initUsers } from './reducers/usersReducer'
+
 
 
 function App(props) {
@@ -23,12 +32,18 @@ function App(props) {
       const user = JSON.parse(localStorage.user)
       props.loginUser(user)
       updateBlogs()
+      getUsers()
     }
   }, [])
 
   const updateBlogs = async () => {
     const blogs = await blogServices.getAll()
     props.initBlogs(blogs)
+  }
+
+  const getUsers = async () => {
+    const users = await userServices.getAll()
+    props.initUsers(users)
   }
 
   const handleLogin = async (event) => {
@@ -65,23 +80,28 @@ function App(props) {
     updateBlogs()
   }
 
-  const { user, blogs } = props
+  const { user, blogs, } = props
 
   if (user) {
 
     return (
-      <div>
-        <AlertMessage />
-        <h1>Blogs</h1>
-        <p>
-          {user.name} logged in. <button type="button" onClick={handleLogout}>Log out</button>
-        </p>
-        <ToggleComponent buttonLabel="Create new post">
-          <CreateBlog token={user.token} update={handleCreatePost} />
-        </ToggleComponent>
-        <br></br>
-        {blogs.map(blog => <Blog key={blog.id} blog={blog} user={user} update={updateBlogs}/>)}
-      </div>
+      <Router>
+        <div>
+          <AlertMessage />
+          <h1>Blogs</h1>
+          <p>
+            {user.name} logged in. <button type="button" onClick={handleLogout}>Log out</button>
+          </p>
+          <Route path="/create" render={() => 
+            <ToggleComponent buttonLabel="Create new post">
+              <CreateBlog token={user.token} update={handleCreatePost} />
+            </ToggleComponent>
+          } />
+          <Route exact path="/" render={() => blogs.map(blog => <Blog key={blog.id} blog={blog} user={user} update={updateBlogs}/>)} />
+          <Route exact path="/users" render={() => <Users />} />
+          <Route exact path="/users/:id" render={({ match }) => <UserBlogInfo id={match.params.id} />} />
+        </div>
+      </Router>
     )
   } else {
 
@@ -116,7 +136,8 @@ const mapDispatchToProps = {
   logoutUser,
   initBlogs,
   addNotification,
-  removeNotification
+  removeNotification,
+  initUsers
 }
 
 export default connect(

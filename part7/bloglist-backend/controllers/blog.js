@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 router.post('/:id/comments', async (req, res) => {
   const postId = req.params.id
-
+  if(!req.body) res.status(400).send({error: "missing data"})
   const post = await Blog.findById(postId)
   const parsedPost = post.toJSON()
   const comments = parsedPost.comments

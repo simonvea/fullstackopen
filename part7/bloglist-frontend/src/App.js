@@ -7,6 +7,7 @@ import {
 import  { useField } from './hooks'
 import LoginForm from './components/login.js'
 import Blog from './components/blog.js'
+import BlogList from './components/blogList.js'
 import loginServices from './services/login.js'
 import blogServices from './services/blogs.js'
 import userServices from './services/users'
@@ -15,6 +16,7 @@ import AlertMessage from './components/alertMessage.js'
 import ToggleComponent from './components/ToggleComponent'
 import Users from './components/users'
 import UserBlogInfo from './components/userBlogInfo'
+import NavBar from './components/navBar'
 import { loginUser, logoutUser } from './reducers/userReducer'
 import { initBlogs } from './reducers/blogReducer'
 import { addNotification, removeNotification } from './reducers/notificationReducer'
@@ -86,6 +88,7 @@ function App(props) {
 
     return (
       <Router>
+        <NavBar />
         <div>
           <AlertMessage />
           <h1>Blogs</h1>
@@ -97,9 +100,11 @@ function App(props) {
               <CreateBlog token={user.token} update={handleCreatePost} />
             </ToggleComponent>
           } />
-          <Route exact path="/" render={() => blogs.map(blog => <Blog key={blog.id} blog={blog} user={user} update={updateBlogs}/>)} />
+          <Route exact path="/" render={() => blogs.map(blog => <BlogList key={blog.id} blog={blog} />)} />
+          <Route exact path="/blogs" render={() => blogs.map(blog => <BlogList key={blog.id} blog={blog} />)} />
           <Route exact path="/users" render={() => <Users />} />
           <Route exact path="/users/:id" render={({ match }) => <UserBlogInfo id={match.params.id} />} />
+          <Route exact path="/blogs/:id" render={({ match }) => <Blog id={match.params.id} />} />
         </div>
       </Router>
     )

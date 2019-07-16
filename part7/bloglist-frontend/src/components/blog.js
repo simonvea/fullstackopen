@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
 import blogServices from '../services/blogs'
 
-function Blog({ blog, user, update, }){
-  const [active, setActive] = useState(false)
+function Blog(props){
+  const { blog, user, update } = props
   const [likes, setLikes] = useState(blog.likes)
-
-  const showWhenActive = { display: active ? '' : 'none' }
-  const showWhenUser = { display: user.username === blog.user.username ? '' : 'none' }
-
 
   const blogStyle = {
     paddingTop: 10,
@@ -49,12 +46,14 @@ function Blog({ blog, user, update, }){
 
   }
 
+  const showWhenUser = { display: user.username === blog.user.username ? '' : 'none' }
+
   return (
     <div style={blogStyle}>
-      <div onClick={() => setActive(!active)} className="blog-title">
+      <div className="blog-title">
         {blog.title} {blog.author}
       </div>
-      <div style={showWhenActive} className="blog-info" >
+      <div className="blog-info" >
         <div>
           {likes} likes <button type="button" onClick={handleLike}>like</button>
         </div>
@@ -73,4 +72,12 @@ function Blog({ blog, user, update, }){
   )
 }
 
-export default Blog
+const mapStateToProps = (state, ownProps) => {
+  return {
+    blog: state.blogs.find(blog => blog.id === ownProps.id),
+    user: state.user,
+    update: ownProps.update
+  }
+}
+
+export default connect(mapStateToProps)(Blog)

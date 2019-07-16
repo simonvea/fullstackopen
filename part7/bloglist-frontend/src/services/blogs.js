@@ -54,10 +54,32 @@ async function deletePost (blogId, token) {
   return response.status
 }
 
+async function addComment (comment, blogId) {
+  console.log(comment)
+  const init = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      comment
+    })
+  }
+
+  console.log(init)
+
+  const url = `${baseUrl}/${blogId}/comments`
+
+  const response = await fetch(url, init)
+
+  return response.json()
+}
+
 
 export default {
   getAll,
   addBlogPost,
   editPost,
   deletePost,
+  addComment,
 }

@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import blogServices from '../services/blogs'
+import { useField } from '../hooks'
 
 function Blog(props){
   const { blog, user, update } = props
+
   const [likes, setLikes] = useState(blog.likes)
+  const [commentField, clearField] = useField('text')
 
   const blogStyle = {
     paddingTop: 10,
@@ -46,6 +49,15 @@ function Blog(props){
 
   }
 
+  const submitComment = async (blogId) => {
+    const comment = commentField.value
+
+    await blogServices.addComment(comment, blogId)
+
+
+    clearField()
+  }
+
   const showWhenUser = { display: user.username === blog.user.username ? '' : 'none' }
 
   return (
@@ -65,6 +77,14 @@ function Blog(props){
         </div>
         <div style={showWhenUser}>
           <button type="button" onClick={handleDelete}>delete</button>
+        </div>
+        <div>
+          <h3>comments</h3>
+          <input {...commentField}></input>
+          <button onClick={() => submitComment(blog.id)}>add comment</button>
+          <ul>
+            {blog.comments.map((comment, index) => <li key={index}> {comment} </li>)}
+          </ul>
         </div>
       </div>
 

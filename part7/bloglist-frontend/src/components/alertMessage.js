@@ -1,6 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const AlertMessage = ({ type, message }) => {
+const AlertMessage = ({ notification }) => {
+
+  const { type, message } = notification
 
   if(!type) return null
 
@@ -32,4 +35,10 @@ const AlertMessage = ({ type, message }) => {
   )
 }
 
-export default AlertMessage
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
+export default connect(mapStateToProps)(AlertMessage)

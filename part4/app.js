@@ -13,6 +13,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+mongoose.set('useFindAndModify', false);
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
 
 app.use('/api/login', loginRouter)
